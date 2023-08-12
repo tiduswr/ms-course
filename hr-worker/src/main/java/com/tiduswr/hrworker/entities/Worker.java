@@ -1,18 +1,19 @@
 package com.tiduswr.hrworker.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 @Getter @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity @Table(name = "TB_WORKER")
 public class Worker implements Serializable {
+
     @EqualsAndHashCode.Include
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
