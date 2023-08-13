@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.tiduswr.hrpayroll.entities.Worker;
 
+//Eureka server provem um Load Balancer default para esse cliente pois ele não declarou uma url
 @Component
-@FeignClient(name = "hr-worker", url = "localhost:8081", path = "/workers")
+@FeignClient(name = "hr-worker", path = "/workers")
 public interface WorkerFeignClient {
 
     @GetMapping("/{id}")
     ResponseEntity<Worker> findById(@PathVariable("id") Long id); 
-    
+
 }
