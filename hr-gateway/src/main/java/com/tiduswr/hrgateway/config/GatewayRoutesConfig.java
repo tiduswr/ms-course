@@ -27,6 +27,12 @@ public class GatewayRoutesConfig {
                 .metadata(RESPONSE_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .metadata(CONNECT_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .uri("lb://HR-PAYROLL"))
+            .route("hr-user-route", r -> r 
+                .path("/hr-user/**")
+                .filters(f -> f.rewritePath("/hr-user/(?<segment>.*)", "/$\\{segment}"))
+                .metadata(RESPONSE_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
+                .metadata(CONNECT_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
+                .uri("lb://HR-USER"))
             .build();
     }
 }
