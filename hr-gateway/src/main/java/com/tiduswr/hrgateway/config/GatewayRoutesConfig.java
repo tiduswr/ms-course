@@ -16,12 +16,14 @@ public class GatewayRoutesConfig {
     RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
             .route("hr-worker-route", r -> r
-                .path("/workers/**")
+                .path("/hr-worker/**")
+                .filters(f -> f.rewritePath("/hr-worker/(?<segment>.*)", "/$\\{segment}"))
                 .metadata(RESPONSE_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .metadata(CONNECT_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .uri("lb://HR-WORKER"))
             .route("hr-payroll-route", r -> r
-                .path("/payments/**")
+                .path("/hr-payroll/**")
+                .filters(f -> f.rewritePath("/hr-payroll/(?<segment>.*)", "/$\\{segment}"))
                 .metadata(RESPONSE_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .metadata(CONNECT_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
                 .uri("lb://HR-PAYROLL"))
