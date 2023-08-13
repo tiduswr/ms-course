@@ -37,6 +37,13 @@ public class WorkerResource {
     @GetMapping("{id}")
     public ResponseEntity<Worker> findById(@PathVariable("id") Long id){
         logger.info("Solicitação recebida no worker da porta " + env.getProperty("local.server.port"));
+
+        try{
+            Thread.sleep(3000);
+        }catch(Exception e){
+            logger.error("Erro no Thread.sleep(3000)", e);
+        }
+
         Worker worker = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.ok(worker);
     }
