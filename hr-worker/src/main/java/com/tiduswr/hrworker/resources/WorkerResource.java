@@ -6,6 +6,7 @@ import com.tiduswr.hrworker.repository.WorkerRepository;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class WorkerResource {
 
     private static final Logger logger = LoggerFactory.getLogger(WorkerResource.class);
 
+    @Value("${test.config}")
+    private String testConfig;
+
     @Autowired
     Environment env;
 
@@ -36,16 +40,27 @@ public class WorkerResource {
 
     @GetMapping("{id}")
     public ResponseEntity<Worker> findById(@PathVariable("id") Long id){
-        logger.info("Solicitação recebida no worker da porta " + env.getProperty("local.server.port"));
-
+        if(logger.isInfoEnabled() && env != null) 
+            logger.info("Solicitação recebida no worker da porta {}", 
+                env.getProperty("local.server.port"));
+        
         try{
             Thread.sleep(3000);
-        }catch(Exception e){
+        }catch(InterruptedException e){
             logger.error("Erro no Thread.sleep(3000)", e);
         }
 
         Worker worker = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.ok(worker);
+    }
+
+    @GetMapping("/configs")
+    public ResponseEntity<Void> getConfigs(){
+
+        if(logger.isInfoEnabled() && testConfig != null) 
+            logger.info("Config= {}", testConfig);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
