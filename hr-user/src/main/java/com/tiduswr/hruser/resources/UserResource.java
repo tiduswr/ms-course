@@ -32,7 +32,7 @@ public class UserResource {
     public ResponseEntity<User> findByEmail(@RequestParam String email){
         User user = repository.findByEmail(email).orElseThrow(() ->
             new ResponseStatusException(HttpStatus.NOT_FOUND));
-
+        System.out.println(user.getEmail());
         return ResponseEntity.ok(user);
     }
 

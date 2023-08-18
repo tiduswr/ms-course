@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.Buildable;
+import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.cloud.gateway.route.builder.PredicateSpec;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.gateway.support.RouteMetadataUtils;
@@ -26,7 +27,7 @@ public class GatewayRoutesConfig {
 
     private Buildable<Route> buildDeafultPredicateSpec(PredicateSpec r, String serviceName){
         return r.path(String.format("/%s/**", serviceName))
-            .filters(f -> f.rewritePath(String.format("/%s/(?<segment>.*)", serviceName), "/$\\{segment}"))
+            .filters(f -> f.rewritePath(String.format("/%s/(?<segment>.*)", serviceName), "/$\\{segment}"))            
             .metadata(RouteMetadataUtils.RESPONSE_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
             .metadata(RouteMetadataUtils.CONNECT_TIMEOUT_ATTR, GLOBAL_TIMEOUT)
             .uri(String.format("lb://%s", serviceName.toUpperCase()));
